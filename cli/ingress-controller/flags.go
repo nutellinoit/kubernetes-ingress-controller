@@ -49,6 +49,7 @@ type cliConfig struct {
 	// Kong connection details
 	KongAdminURL             string
 	KongWorkspace            string
+	KongNamespaceAsWorkspace bool
 	KongAdminConcurrency     int
 	KongAdminFilterTags      []string
 	KongAdminHeaders         []string
@@ -117,6 +118,9 @@ format of protocol://address:port`)
 
 	flags.String("kong-workspace", "",
 		"Workspace in Kong Enterprise to be configured")
+
+	flags.Bool("kong-namespace-as-workspace", false,
+		"Use Kubernetes resource placement as workspace")
 
 	flag.Int("kong-admin-concurrency", 10,
 		"Max number of concurrent requests sent to Kong's Admin API")
@@ -277,6 +281,7 @@ func parseFlags() (cliConfig, error) {
 	config.KongAdminURL = kongAdminURL
 
 	config.KongWorkspace = viper.GetString("kong-workspace")
+	config.KongNamespaceAsWorkspace = viper.GetBool("kong-namespace-as-workspace")
 	config.KongAdminConcurrency = viper.GetInt("kong-admin-concurrency")
 	config.KongAdminFilterTags = viper.GetStringSlice("kong-admin-filter-tag")
 

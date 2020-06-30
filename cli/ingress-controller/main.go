@@ -223,6 +223,10 @@ func main() {
 		glog.Error("running controller with kong backed by cassandra is " +
 			"deprecated; please consider using postgres or in-memory mode")
 	}
+	if cliConfig.KongWorkspace != "" && cliConfig.KongNamespaceAsWorkspace == true {
+		glog.Error("running controller with --kong-workspace  " +
+			"and --kong-namespace-as-workspace is not permitted")
+	}
 
 	req, _ := http.NewRequest("GET",
 		cliConfig.KongAdminURL+"/tags", nil)
